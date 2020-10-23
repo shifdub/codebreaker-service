@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -59,9 +60,21 @@ public class User {
   private String displayName;
 
   @NonNull
-  @OneToMany (fetch = FetchType.LAZY, mappedBy = "originator", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "originator", cascade = CascadeType.ALL,
+  orphanRemoval = true)
   @OrderBy("started DESC")
   private final List<Match> matchesOriginated = new LinkedList<>();
+
+  @NonNull
+  @OneToMany(mappedBy = "winner", fetch = FetchType.LAZY,
+      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @OrderBy("deadline DESC")
+  private final List<Match> matchesWon = new LinkedList<>();
+
+  @NonNull
+  @ManyToMany(mappedBy = "players, fetch = FetchType.Lazy")
+  @OrderBy("deadline DESC")
+  private final List<Match> matches = new LinkedList<>();
 
   @NonNull
   public UUID getId() {
@@ -103,5 +116,16 @@ public class User {
   @NonNull
   public List<Match> getMatchesOriginated() {
     return matchesOriginated;
+  }
+
+  @NonNull
+  public List<Match> getMatchesWon() {
+    return matchesWon;
+  }
+
+  @NonNull
+  public List<Match> getMatches() {
+    return matches;
+
   }
 }
