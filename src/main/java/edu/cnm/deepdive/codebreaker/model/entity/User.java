@@ -61,7 +61,7 @@ public class User {
 
   @NonNull
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "originator", cascade = CascadeType.ALL,
-  orphanRemoval = true)
+      orphanRemoval = true)
   @OrderBy("started DESC")
   private final List<Match> matchesOriginated = new LinkedList<>();
 
@@ -72,7 +72,7 @@ public class User {
   private final List<Match> matchesWon = new LinkedList<>();
 
   @NonNull
-  @ManyToMany(mappedBy = "players, fetch = FetchType.Lazy")
+  @ManyToMany(mappedBy = "players", fetch = FetchType.LAZY)
   @OrderBy("deadline DESC")
   private final List<Match> matches = new LinkedList<>();
 
@@ -126,6 +126,6 @@ public class User {
   @NonNull
   public List<Match> getMatches() {
     return matches;
-
   }
+
 }

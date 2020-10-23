@@ -26,7 +26,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ManyToAny;
 import org.springframework.lang.NonNull;
 
-
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(
@@ -78,14 +77,6 @@ public class Match {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "winner_id")
   private User winner;
-
-  @NonNull
-  @ManyToMany(fetch = FetchType.EAGER,
-      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-  @JoinTable(joinColumns= {@JoinColumn(name = "match_id")},
-      inverseJoinColumns = {@JoinColumn(name = "user_id")})
-  @OrderBy("displayName ASC")
-  private final List<User> players = new LinkedList<>();
 
   @NonNull
   public UUID getId() {
